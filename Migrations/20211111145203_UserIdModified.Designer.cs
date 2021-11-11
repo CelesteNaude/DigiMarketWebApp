@@ -4,14 +4,16 @@ using DigiMarketWebApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DigiMarketWebApp.Migrations
 {
     [DbContext(typeof(DigiMarketDbContext))]
-    partial class DigiMarketDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211111145203_UserIdModified")]
+    partial class UserIdModified
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -161,7 +163,7 @@ namespace DigiMarketWebApp.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageName")
                         .HasColumnType("nvarchar(100)");
@@ -169,9 +171,12 @@ namespace DigiMarketWebApp.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("WebAppUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("PhotoID");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("WebAppUserId");
 
                     b.ToTable("Photo");
                 });
@@ -370,7 +375,7 @@ namespace DigiMarketWebApp.Migrations
                 {
                     b.HasOne("DigiMarketWebApp.Areas.Identity.Data.WebAppUser", "WebAppUser")
                         .WithMany("Photos")
-                        .HasForeignKey("Id");
+                        .HasForeignKey("WebAppUserId");
 
                     b.Navigation("WebAppUser");
                 });

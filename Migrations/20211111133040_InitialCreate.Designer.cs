@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DigiMarketWebApp.Migrations
 {
     [DbContext(typeof(DigiMarketDbContext))]
-    [Migration("20211026113102_Initial-Create")]
+    [Migration("20211111133040_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,7 +18,7 @@ namespace DigiMarketWebApp.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.11")
+                .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("DigiMarketWebApp.Areas.Identity.Data.WebAppUser", b =>
@@ -95,6 +95,115 @@ namespace DigiMarketWebApp.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("DigiMarketWebApp.Models.Album", b =>
+                {
+                    b.Property<int>("AlbumID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AlbumName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("PhotoID")
+                        .HasColumnType("int");
+
+                    b.HasKey("AlbumID");
+
+                    b.HasIndex("Id");
+
+                    b.HasIndex("PhotoID");
+
+                    b.ToTable("Album");
+                });
+
+            modelBuilder.Entity("DigiMarketWebApp.Models.Metadata", b =>
+                {
+                    b.Property<int>("MetadataID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Latitude")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Longtitude")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Owner")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PhotoID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Tag")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MetadataID");
+
+                    b.HasIndex("PhotoID");
+
+                    b.ToTable("Metadata");
+                });
+
+            modelBuilder.Entity("DigiMarketWebApp.Models.Photo", b =>
+                {
+                    b.Property<int>("PhotoID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageName")
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("WebAppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("PhotoID");
+
+                    b.HasIndex("WebAppUserId");
+
+                    b.ToTable("Photo");
+                });
+
+            modelBuilder.Entity("DigiMarketWebApp.Models.UserAccess", b =>
+                {
+                    b.Property<int>("UserAccessID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("PhotoID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserAccessID");
+
+                    b.HasIndex("Id");
+
+                    b.HasIndex("PhotoID");
+
+                    b.ToTable("UserAccess");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -232,6 +341,62 @@ namespace DigiMarketWebApp.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("DigiMarketWebApp.Models.Album", b =>
+                {
+                    b.HasOne("DigiMarketWebApp.Areas.Identity.Data.WebAppUser", "WebAppUser")
+                        .WithMany("Albums")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("DigiMarketWebApp.Models.Photo", "Photo")
+                        .WithMany("Albums")
+                        .HasForeignKey("PhotoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Photo");
+
+                    b.Navigation("WebAppUser");
+                });
+
+            modelBuilder.Entity("DigiMarketWebApp.Models.Metadata", b =>
+                {
+                    b.HasOne("DigiMarketWebApp.Models.Photo", "Photo")
+                        .WithMany("Metadatas")
+                        .HasForeignKey("PhotoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Photo");
+                });
+
+            modelBuilder.Entity("DigiMarketWebApp.Models.Photo", b =>
+                {
+                    b.HasOne("DigiMarketWebApp.Areas.Identity.Data.WebAppUser", "WebAppUser")
+                        .WithMany("Photos")
+                        .HasForeignKey("WebAppUserId");
+
+                    b.Navigation("WebAppUser");
+                });
+
+            modelBuilder.Entity("DigiMarketWebApp.Models.UserAccess", b =>
+                {
+                    b.HasOne("DigiMarketWebApp.Areas.Identity.Data.WebAppUser", "WebAppUser")
+                        .WithMany("UserAccesses")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("DigiMarketWebApp.Models.Photo", "Photo")
+                        .WithMany("UserAccesses")
+                        .HasForeignKey("PhotoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Photo");
+
+                    b.Navigation("WebAppUser");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -281,6 +446,24 @@ namespace DigiMarketWebApp.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DigiMarketWebApp.Areas.Identity.Data.WebAppUser", b =>
+                {
+                    b.Navigation("Albums");
+
+                    b.Navigation("Photos");
+
+                    b.Navigation("UserAccesses");
+                });
+
+            modelBuilder.Entity("DigiMarketWebApp.Models.Photo", b =>
+                {
+                    b.Navigation("Albums");
+
+                    b.Navigation("Metadatas");
+
+                    b.Navigation("UserAccesses");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,5 @@
 ﻿using DigiMarketWebApp.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,10 +17,10 @@ namespace DigiMarketWebApp.Models
 
 
         // Navigation Properties
-        public int PictureID { get; set; }
-        public Picture Picture { get; set; }
+        public int PhotoID { get; set; }
+        public Photo Photo { get; set; }
 
-        public int UserID { get; set; }
+        public string Id { get; set; }
         public WebAppUser WebAppUser { get; set; }
     }
 }

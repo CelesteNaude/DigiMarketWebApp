@@ -16,10 +16,10 @@ namespace DigiMarketWebApp.Models
         public string AlbumName { get; set; }
 
         // Navigation Properties
-        public int PictureID { get; set; }
-        public Picture Picture { get; set; }
+        public int PhotoID { get; set; }
+        public Photo Photo { get; set; }
 
-        public string IdentityUserID { get; set; }
-        public IdentityUser IdentityUser { get; set; }
+        public string Id { get; set; }
+        public WebAppUser WebAppUser { get; set; }
     }
 }

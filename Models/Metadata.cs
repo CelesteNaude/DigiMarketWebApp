@@ -19,7 +19,7 @@ namespace DigiMarketWebApp.Models
         public string Owner { get; set; }
 
         //Navigation Properties
-        public int PictureID { get; set; }
-        public Picture Picture { get; set; }
+        public int PhotoID { get; set; }
+        public Photo Photo { get; set; }
     }
 }
