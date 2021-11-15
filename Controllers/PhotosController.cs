@@ -10,6 +10,8 @@ using DigiMarketWebApp.Areas.Identity.Data;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using DigiMarketWebApp.Data;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace DigiMarketWebApp.Controllers
 {
@@ -76,6 +78,12 @@ namespace DigiMarketWebApp.Controllers
                 {
                     await photo.ImageFile.CopyToAsync(fileStream);
                 }
+
+                // Set User id for image
+                var Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var user = _context.Users.Where(u => u.Id == Id).SingleOrDefault();
+                var userId = user.Id;
+                photo.Id = userId;
 
                 // Insert record
                 _context.Add(photo);
