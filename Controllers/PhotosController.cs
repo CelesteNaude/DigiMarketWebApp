@@ -29,7 +29,10 @@ namespace DigiMarketWebApp.Controllers
         // GET: Photos
         public async Task<IActionResult> Index()
         {
-            var profileContext = _context.Photos.Include(p => p.WebAppUser);
+            string email = User.FindFirstValue(ClaimTypes.Email);
+            var user = _context.Users.Where(u => u.Email == email).SingleOrDefault();
+            string userId = user.Id;
+            var profileContext = _context.Photos.Include(p => p.WebAppUser).Where(u => u.WebAppUser.Id == userId);
             return View(await profileContext.ToListAsync());
         }
 
