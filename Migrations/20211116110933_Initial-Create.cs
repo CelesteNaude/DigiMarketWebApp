@@ -163,15 +163,14 @@ namespace DigiMarketWebApp.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(50)", nullable: true),
                     ImageName = table.Column<string>(type: "nvarchar(100)", nullable: true),
-                    Id = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    WebAppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Photo", x => x.PhotoID);
                     table.ForeignKey(
-                        name: "FK_Photo_AspNetUsers_WebAppUserId",
-                        column: x => x.WebAppUserId,
+                        name: "FK_Photo_AspNetUsers_Id",
+                        column: x => x.Id,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -308,9 +307,9 @@ namespace DigiMarketWebApp.Migrations
                 column: "PhotoID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Photo_WebAppUserId",
+                name: "IX_Photo_Id",
                 table: "Photo",
-                column: "WebAppUserId");
+                column: "Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserAccess_Id",

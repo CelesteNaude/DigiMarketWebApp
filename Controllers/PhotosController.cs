@@ -80,9 +80,9 @@ namespace DigiMarketWebApp.Controllers
                 }
 
                 // Set User id for image
-                var Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var user = _context.Users.Where(u => u.Id == Id).SingleOrDefault();
-                var userId = user.Id;
+                string email = User.FindFirstValue(ClaimTypes.Email);
+                var user = _context.Users.Where(u => u.Email == email).SingleOrDefault();
+                string userId = user.Id;
                 photo.Id = userId;
 
                 // Insert record
