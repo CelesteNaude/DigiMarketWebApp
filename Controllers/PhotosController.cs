@@ -91,8 +91,15 @@ namespace DigiMarketWebApp.Controllers
                 // Insert record
                 _context.Add(photo);
                 await _context.SaveChangesAsync();
+                //Metadata metadata = new Metadata();
+                //metadata.PhotoID = photo.PhotoID;
+                //_context.Add(metadata);
+                //await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            
+
             ViewData["Id"] = new SelectList(_context.Set<WebAppUser>(), "Id", "Id", photo.Id);
             return View(photo);
         }
@@ -100,18 +107,19 @@ namespace DigiMarketWebApp.Controllers
         // GET: Photos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
 
-            var photo = await _context.Photos.FindAsync(id);
-            if (photo == null)
-            {
-                return NotFound();
-            }
-            ViewData["Id"] = new SelectList(_context.Set<WebAppUser>(), "Id", "Id", photo.Id);
-            return View(photo);
+            //var photo = await _context.Photos.FindAsync(id);
+            //if (photo == null)
+            //{
+            //    return NotFound();
+            //}
+            //ViewData["Id"] = new SelectList(_context.Set<WebAppUser>(), "Id", "Id", photo.Id);
+            //return View(photo);
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Photos/Edit/5
@@ -121,33 +129,34 @@ namespace DigiMarketWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("PhotoID,Title,ImageName,Id")] Photo photo)
         {
-            if (id != photo.PhotoID)
-            {
-                return NotFound();
-            }
+            //if (id != photo.PhotoID)
+            //{
+            //    return NotFound();
+            //}
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(photo);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PhotoExists(photo.PhotoID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["Id"] = new SelectList(_context.Set<WebAppUser>(), "Id", "Id", photo.Id);
-            return View(photo);
+            //if (ModelState.IsValid)
+            //{
+            //    try
+            //    {
+            //        _context.Update(photo);
+            //        await _context.SaveChangesAsync();
+            //    }
+            //    catch (DbUpdateConcurrencyException)
+            //    {
+            //        if (!PhotoExists(photo.PhotoID))
+            //        {
+            //            return NotFound();
+            //        }
+            //        else
+            //        {
+            //            throw;
+            //        }
+            //    }
+            //    return RedirectToAction(nameof(Index));
+            //}
+            //ViewData["Id"] = new SelectList(_context.Set<WebAppUser>(), "Id", "Id", photo.Id);
+            //return View(photo);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Photos/Delete/5

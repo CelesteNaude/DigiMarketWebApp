@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DigiMarketWebApp.Models;
 using DigiMarketWebApp.Data;
+using Microsoft.AspNetCore.Routing;
 
 namespace DigiMarketWebApp.Controllers
 {
@@ -19,10 +20,13 @@ namespace DigiMarketWebApp.Controllers
             _context = context;
         }
 
+
         // GET: Metadatas
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int id)
         {
-            var profileContext = _context.Metadatas.Include(m => m.Photo);
+            // Get only metadata related to the photo
+            var profileContext = _context.Metadatas.Include(m => m.Photo).Where(p => p.PhotoID == id);
+            TempData["photoId"] = id;
             return View(await profileContext.ToListAsync());
         }
 
@@ -33,7 +37,6 @@ namespace DigiMarketWebApp.Controllers
             {
                 return NotFound();
             }
-
             var metadata = await _context.Metadatas
                 .Include(m => m.Photo)
                 .FirstOrDefaultAsync(m => m.MetadataID == id);
@@ -41,6 +44,7 @@ namespace DigiMarketWebApp.Controllers
             {
                 return NotFound();
             }
+
 
             return View(metadata);
         }
@@ -59,14 +63,19 @@ namespace DigiMarketWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MetadataID,Longtitude,Latitude,Tag,Date,Owner,PhotoID")] Metadata metadata)
         {
+            int photoId = (int)TempData["photoId"];
             if (ModelState.IsValid)
             {
+                metadata.PhotoID = photoId;
+
                 _context.Add(metadata);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PhotoID"] = new SelectList(_context.Photos, "PhotoID", "PhotoID", metadata.PhotoID);
-            return View(metadata);
+            TempData["createId"] = photoId;
+            //ViewData["PhotoID"] = new SelectList(_context.Photos, "PhotoID", "PhotoID", metadata.PhotoID);
+            return LocalRedirect("~/Metadatas/Index");
+            //return View(metadata);
         }
 
         // GET: Metadatas/Edit/5
@@ -149,7 +158,8 @@ namespace DigiMarketWebApp.Controllers
             var metadata = await _context.Metadatas.FindAsync(id);
             _context.Metadatas.Remove(metadata);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return Redirect("https://localhost:44348/Photos");
+            //return RedirectToAction(nameof(Index));
         }
 
         private bool MetadataExists(int id)
