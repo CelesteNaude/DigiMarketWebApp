@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DigiMarketWebApp.Models;
 using DigiMarketWebApp.Areas.Identity.Data;
 using DigiMarketWebApp.Data;
+using Microsoft.AspNetCore.Http;
 
 namespace DigiMarketWebApp.Controllers
 {
@@ -21,9 +22,17 @@ namespace DigiMarketWebApp.Controllers
         }
 
         // GET: UserAccesses
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int id)
         {
-            var profileContext = _context.UserAccesses.Include(u => u.Photo).Include(u => u.WebAppUser);
+            if (0 != id)
+            {
+                HttpContext.Session.SetInt32("photoAccess", id);
+            }
+            if (0 == id)
+            {
+                id = (int)HttpContext.Session.GetInt32("photoAccess");
+            }
+            var profileContext = _context.UserAccesses.Include(u => u.Photo).Include(u => u.WebAppUser).Where(p => p.PhotoID == id);
             return View(await profileContext.ToListAsync());
         }
 
@@ -62,8 +71,18 @@ namespace DigiMarketWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserAccessID,UserEmail,PhotoID,Id")] UserAccess userAccess)
         {
+            
             if (ModelState.IsValid)
             {
+                int photoId = (int)HttpContext.Session.GetInt32("photoAccess");
+                //int photoId = (int)TempData["photoId"];
+                // Set user id
+                var user = _context.Users.Where(u => u.Email == userAccess.UserEmail).SingleOrDefault();
+                userAccess.Id = user.Id;
+
+                // Set photo id
+                userAccess.PhotoID = photoId;
+
                 _context.Add(userAccess);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

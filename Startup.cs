@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Session;
 
 namespace DigiMarketWebApp
 {
@@ -30,6 +31,10 @@ namespace DigiMarketWebApp
             //services.AddDbContext<ProfileContext>(options => options.UseSqlServer(connectionString));
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            // Configure session
+            services.AddDistributedMemoryCache();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +57,8 @@ namespace DigiMarketWebApp
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
