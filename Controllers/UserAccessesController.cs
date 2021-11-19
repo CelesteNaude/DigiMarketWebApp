@@ -9,6 +9,7 @@ using DigiMarketWebApp.Models;
 using DigiMarketWebApp.Areas.Identity.Data;
 using DigiMarketWebApp.Data;
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace DigiMarketWebApp.Controllers
 {
@@ -176,6 +177,14 @@ namespace DigiMarketWebApp.Controllers
             _context.UserAccesses.Remove(userAccess);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Shared Photos
+        public async Task<IActionResult> Shared()
+        {
+            string email = User.FindFirstValue(ClaimTypes.Email);
+            var sharedPhoto = _context.UserAccesses.Include(u => u.Photo).Include(u => u.WebAppUser).Where(p => p.UserEmail == email);
+            return View(await sharedPhoto.ToListAsync());
         }
 
         private bool UserAccessExists(int id)

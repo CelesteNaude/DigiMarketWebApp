@@ -105,7 +105,7 @@ namespace DigiMarketWebApp.Controllers
         }
 
         // GET: Photos/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit()
         {
             //if (id == null)
             //{

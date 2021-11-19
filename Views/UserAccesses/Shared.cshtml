@@ -1,0 +1,54 @@
+﻿@model IEnumerable<DigiMarketWebApp.Models.UserAccess>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a class="nav-link text-dark" asp-area="" asp-controller="Photos" asp-action="Index">Back to Photos</a>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserEmail)
+            </th>
+            <th>
+                Photo
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WebAppUser)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserEmail)
+                </td>
+                <td>
+                    <dl class="row">
+                        <dd class="col-sm-10">
+                            <img src="@("~/image/"+item.Photo.ImageName)" asp-append-version="true" width="250px" height="250px" />
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WebAppUser.Id)
+                </td>
+                <td>
+                    <div class="text-center">
+                        <a class="nav-link" asp-route-id="@item.PhotoID" asp-area="" asp-controller="Metadatas" asp-action="Index">More Information</a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
