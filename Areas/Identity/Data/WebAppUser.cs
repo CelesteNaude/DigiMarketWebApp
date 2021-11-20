@@ -29,5 +29,7 @@ namespace DigiMarketWebApp.Areas.Identity.Data
         public List<Album> Albums { get; set; }
         public List<Photo> Photos { get; set; }
         public List<UserAccess> UserAccesses { get; set; }
+        public List<SharedAlbum> SharedAlbums { get; set; }
+        public List<AlbumName> AlbumNames { get; set; }
     }
 }

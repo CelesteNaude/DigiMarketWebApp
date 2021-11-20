@@ -12,9 +12,11 @@ using System.IO;
 using DigiMarketWebApp.Data;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DigiMarketWebApp.Controllers
 {
+    [Authorize]
     public class PhotosController : Controller
     {
         private readonly DigiMarketDbContext _context;

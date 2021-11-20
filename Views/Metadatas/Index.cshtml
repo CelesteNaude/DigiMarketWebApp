@@ -15,10 +15,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Longtitude)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Latitude)
+                @Html.DisplayNameFor(model => model.Location)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Tag)
@@ -39,10 +36,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Longtitude)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Latitude)
+                @Html.DisplayFor(modelItem => item.Location)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Tag)

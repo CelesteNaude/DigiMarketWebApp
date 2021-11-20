@@ -71,6 +71,26 @@ namespace DigiMarketWebApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AlbumName",
+                columns: table => new
+                {
+                    AlbumNameID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AlbumName", x => x.AlbumNameID);
+                    table.ForeignKey(
+                        name: "FK_AlbumName_AspNetUsers_Id",
+                        column: x => x.Id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
@@ -161,7 +181,7 @@ namespace DigiMarketWebApp.Migrations
                 {
                     PhotoID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(50)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(150)", nullable: true),
                     ImageName = table.Column<string>(type: "nvarchar(100)", nullable: true),
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
@@ -182,13 +202,19 @@ namespace DigiMarketWebApp.Migrations
                 {
                     AlbumID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AlbumName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AlbumNameId = table.Column<int>(type: "int", nullable: false),
                     PhotoID = table.Column<int>(type: "int", nullable: false),
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Album", x => x.AlbumID);
+                    table.ForeignKey(
+                        name: "FK_Album_AlbumName_AlbumNameId",
+                        column: x => x.AlbumNameId,
+                        principalTable: "AlbumName",
+                        principalColumn: "AlbumNameID",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Album_AspNetUsers_Id",
                         column: x => x.Id,
@@ -208,8 +234,7 @@ namespace DigiMarketWebApp.Migrations
                 {
                     MetadataID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Longtitude = table.Column<int>(type: "int", nullable: false),
-                    Latitude = table.Column<int>(type: "int", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(100)", nullable: true),
                     Tag = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Owner = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -252,6 +277,51 @@ namespace DigiMarketWebApp.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "SharedAlbum",
+                columns: table => new
+                {
+                    SharedAlbumID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AlbumNameID = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    AlbumID = table.Column<int>(type: "int", nullable: true),
+                    PhotoID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SharedAlbum", x => x.SharedAlbumID);
+                    table.ForeignKey(
+                        name: "FK_SharedAlbum_Album_AlbumID",
+                        column: x => x.AlbumID,
+                        principalTable: "Album",
+                        principalColumn: "AlbumID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SharedAlbum_AlbumName_AlbumNameID",
+                        column: x => x.AlbumNameID,
+                        principalTable: "AlbumName",
+                        principalColumn: "AlbumNameID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SharedAlbum_AspNetUsers_Id",
+                        column: x => x.Id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_SharedAlbum_Photo_PhotoID",
+                        column: x => x.PhotoID,
+                        principalTable: "Photo",
+                        principalColumn: "PhotoID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Album_AlbumNameId",
+                table: "Album",
+                column: "AlbumNameId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Album_Id",
                 table: "Album",
@@ -261,6 +331,11 @@ namespace DigiMarketWebApp.Migrations
                 name: "IX_Album_PhotoID",
                 table: "Album",
                 column: "PhotoID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AlbumName_Id",
+                table: "AlbumName",
+                column: "Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -312,6 +387,26 @@ namespace DigiMarketWebApp.Migrations
                 column: "Id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SharedAlbum_AlbumID",
+                table: "SharedAlbum",
+                column: "AlbumID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SharedAlbum_AlbumNameID",
+                table: "SharedAlbum",
+                column: "AlbumNameID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SharedAlbum_Id",
+                table: "SharedAlbum",
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SharedAlbum_PhotoID",
+                table: "SharedAlbum",
+                column: "PhotoID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserAccess_Id",
                 table: "UserAccess",
                 column: "Id");
@@ -324,9 +419,6 @@ namespace DigiMarketWebApp.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Album");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -346,10 +438,19 @@ namespace DigiMarketWebApp.Migrations
                 name: "Metadata");
 
             migrationBuilder.DropTable(
+                name: "SharedAlbum");
+
+            migrationBuilder.DropTable(
                 name: "UserAccess");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Album");
+
+            migrationBuilder.DropTable(
+                name: "AlbumName");
 
             migrationBuilder.DropTable(
                 name: "Photo");

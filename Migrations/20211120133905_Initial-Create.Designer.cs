@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DigiMarketWebApp.Migrations
 {
     [DbContext(typeof(DigiMarketDbContext))]
-    [Migration("20211116110933_Initial-Create")]
+    [Migration("20211120133905_Initial-Create")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -105,8 +105,8 @@ namespace DigiMarketWebApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AlbumName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("AlbumNameId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -116,11 +116,34 @@ namespace DigiMarketWebApp.Migrations
 
                     b.HasKey("AlbumID");
 
+                    b.HasIndex("AlbumNameId");
+
                     b.HasIndex("Id");
 
                     b.HasIndex("PhotoID");
 
                     b.ToTable("Album");
+                });
+
+            modelBuilder.Entity("DigiMarketWebApp.Models.AlbumName", b =>
+                {
+                    b.Property<int>("AlbumNameID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("AlbumNameID");
+
+                    b.HasIndex("Id");
+
+                    b.ToTable("AlbumName");
                 });
 
             modelBuilder.Entity("DigiMarketWebApp.Models.Metadata", b =>
@@ -133,11 +156,8 @@ namespace DigiMarketWebApp.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Latitude")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Longtitude")
-                        .HasColumnType("int");
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Owner")
                         .HasColumnType("nvarchar(max)");
@@ -169,13 +189,49 @@ namespace DigiMarketWebApp.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(150)");
 
                     b.HasKey("PhotoID");
 
                     b.HasIndex("Id");
 
                     b.ToTable("Photo");
+                });
+
+            modelBuilder.Entity("DigiMarketWebApp.Models.SharedAlbum", b =>
+                {
+                    b.Property<int>("SharedAlbumID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("AlbumID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AlbumNameID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("PhotoID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SharedAlbumID");
+
+                    b.HasIndex("AlbumID");
+
+                    b.HasIndex("AlbumNameID");
+
+                    b.HasIndex("Id");
+
+                    b.HasIndex("PhotoID");
+
+                    b.ToTable("SharedAlbum");
                 });
 
             modelBuilder.Entity("DigiMarketWebApp.Models.UserAccess", b =>
@@ -341,6 +397,12 @@ namespace DigiMarketWebApp.Migrations
 
             modelBuilder.Entity("DigiMarketWebApp.Models.Album", b =>
                 {
+                    b.HasOne("DigiMarketWebApp.Models.AlbumName", "AlbumName")
+                        .WithMany("Albums")
+                        .HasForeignKey("AlbumNameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DigiMarketWebApp.Areas.Identity.Data.WebAppUser", "WebAppUser")
                         .WithMany("Albums")
                         .HasForeignKey("Id")
@@ -352,7 +414,18 @@ namespace DigiMarketWebApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("AlbumName");
+
                     b.Navigation("Photo");
+
+                    b.Navigation("WebAppUser");
+                });
+
+            modelBuilder.Entity("DigiMarketWebApp.Models.AlbumName", b =>
+                {
+                    b.HasOne("DigiMarketWebApp.Areas.Identity.Data.WebAppUser", "WebAppUser")
+                        .WithMany("AlbumNames")
+                        .HasForeignKey("Id");
 
                     b.Navigation("WebAppUser");
                 });
@@ -373,6 +446,32 @@ namespace DigiMarketWebApp.Migrations
                     b.HasOne("DigiMarketWebApp.Areas.Identity.Data.WebAppUser", "WebAppUser")
                         .WithMany("Photos")
                         .HasForeignKey("Id");
+
+                    b.Navigation("WebAppUser");
+                });
+
+            modelBuilder.Entity("DigiMarketWebApp.Models.SharedAlbum", b =>
+                {
+                    b.HasOne("DigiMarketWebApp.Models.Album", null)
+                        .WithMany("SharedAlbums")
+                        .HasForeignKey("AlbumID");
+
+                    b.HasOne("DigiMarketWebApp.Models.AlbumName", "AlbumName")
+                        .WithMany("SharedAlbums")
+                        .HasForeignKey("AlbumNameID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DigiMarketWebApp.Areas.Identity.Data.WebAppUser", "WebAppUser")
+                        .WithMany("SharedAlbums")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("DigiMarketWebApp.Models.Photo", null)
+                        .WithMany("SharedAlbums")
+                        .HasForeignKey("PhotoID");
+
+                    b.Navigation("AlbumName");
 
                     b.Navigation("WebAppUser");
                 });
@@ -448,11 +547,27 @@ namespace DigiMarketWebApp.Migrations
 
             modelBuilder.Entity("DigiMarketWebApp.Areas.Identity.Data.WebAppUser", b =>
                 {
+                    b.Navigation("AlbumNames");
+
                     b.Navigation("Albums");
 
                     b.Navigation("Photos");
 
+                    b.Navigation("SharedAlbums");
+
                     b.Navigation("UserAccesses");
+                });
+
+            modelBuilder.Entity("DigiMarketWebApp.Models.Album", b =>
+                {
+                    b.Navigation("SharedAlbums");
+                });
+
+            modelBuilder.Entity("DigiMarketWebApp.Models.AlbumName", b =>
+                {
+                    b.Navigation("Albums");
+
+                    b.Navigation("SharedAlbums");
                 });
 
             modelBuilder.Entity("DigiMarketWebApp.Models.Photo", b =>
@@ -460,6 +575,8 @@ namespace DigiMarketWebApp.Migrations
                     b.Navigation("Albums");
 
                     b.Navigation("Metadatas");
+
+                    b.Navigation("SharedAlbums");
 
                     b.Navigation("UserAccesses");
                 });

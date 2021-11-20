@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DigiMarketWebApp.Models;
-using DigiMarketWebApp.Areas.Identity.Data;
 using DigiMarketWebApp.Data;
+using DigiMarketWebApp.Areas.Identity.Data;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace DigiMarketWebApp.Controllers
 {
@@ -21,9 +23,17 @@ namespace DigiMarketWebApp.Controllers
         }
 
         // GET: Albums
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int id)
         {
-            var profileContext = _context.Albums.Include(a => a.Photo).Include(a => a.WebAppUser);
+            if (0 != id)
+            {
+                HttpContext.Session.SetInt32("photoAlbum", id);
+            }
+            if (0 == id)
+            {
+                id = (int)HttpContext.Session.GetInt32("photoAlbum");
+            }
+            var profileContext = _context.Albums.Include(a => a.AlbumName).Include(a => a.Photo).Include(a => a.WebAppUser).Where(p => p.PhotoID == id);
             return View(await profileContext.ToListAsync());
         }
 
@@ -36,6 +46,7 @@ namespace DigiMarketWebApp.Controllers
             }
 
             var album = await _context.Albums
+                .Include(a => a.AlbumName)
                 .Include(a => a.Photo)
                 .Include(a => a.WebAppUser)
                 .FirstOrDefaultAsync(m => m.AlbumID == id);
@@ -50,6 +61,10 @@ namespace DigiMarketWebApp.Controllers
         // GET: Albums/Create
         public IActionResult Create()
         {
+            string email = User.FindFirstValue(ClaimTypes.Email);
+            var user = _context.Users.Where(u => u.Email == email).SingleOrDefault();
+            string userId = user.Id;
+            ViewData["AlbumNameId"] = new SelectList(_context.AlbumNames.Where(u => u.WebAppUser.Id == userId), "AlbumNameID", "Name");
             ViewData["PhotoID"] = new SelectList(_context.Photos, "PhotoID", "PhotoID");
             ViewData["Id"] = new SelectList(_context.Set<WebAppUser>(), "Id", "Id");
             return View();
@@ -60,14 +75,26 @@ namespace DigiMarketWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AlbumID,AlbumName,PhotoID,Id")] Album album)
+        public async Task<IActionResult> Create([Bind("AlbumID,AlbumNameId,PhotoID,Id")] Album album)
         {
             if (ModelState.IsValid)
             {
+                // Set photo id
+                int photoId = (int)HttpContext.Session.GetInt32("photoAlbum");
+                album.PhotoID = photoId;
+
+                // Set user id
+                string email = User.FindFirstValue(ClaimTypes.Email);
+                var user = _context.Users.Where(u => u.Email == email).SingleOrDefault();
+                string userId = user.Id;
+                album.Id = userId;
+
+                // Insert record
                 _context.Add(album);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AlbumNameId"] = new SelectList(_context.AlbumNames, "AlbumNameID", "Name", album.AlbumNameId);
             ViewData["PhotoID"] = new SelectList(_context.Photos, "PhotoID", "PhotoID", album.PhotoID);
             ViewData["Id"] = new SelectList(_context.Set<WebAppUser>(), "Id", "Id", album.Id);
             return View(album);
@@ -86,6 +113,7 @@ namespace DigiMarketWebApp.Controllers
             {
                 return NotFound();
             }
+            ViewData["AlbumNameId"] = new SelectList(_context.AlbumNames, "AlbumNameID", "Name", album.AlbumNameId);
             ViewData["PhotoID"] = new SelectList(_context.Photos, "PhotoID", "PhotoID", album.PhotoID);
             ViewData["Id"] = new SelectList(_context.Set<WebAppUser>(), "Id", "Id", album.Id);
             return View(album);
@@ -96,7 +124,7 @@ namespace DigiMarketWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AlbumID,AlbumName,PhotoID,Id")] Album album)
+        public async Task<IActionResult> Edit(int id, [Bind("AlbumID,AlbumNameId,PhotoID,Id")] Album album)
         {
             if (id != album.AlbumID)
             {
@@ -123,6 +151,7 @@ namespace DigiMarketWebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AlbumNameId"] = new SelectList(_context.AlbumNames, "AlbumNameID", "Name", album.AlbumNameId);
             ViewData["PhotoID"] = new SelectList(_context.Photos, "PhotoID", "PhotoID", album.PhotoID);
             ViewData["Id"] = new SelectList(_context.Set<WebAppUser>(), "Id", "Id", album.Id);
             return View(album);
@@ -137,6 +166,7 @@ namespace DigiMarketWebApp.Controllers
             }
 
             var album = await _context.Albums
+                .Include(a => a.AlbumName)
                 .Include(a => a.Photo)
                 .Include(a => a.WebAppUser)
                 .FirstOrDefaultAsync(m => m.AlbumID == id);
@@ -157,6 +187,20 @@ namespace DigiMarketWebApp.Controllers
             _context.Albums.Remove(album);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // GET: View Album
+        public async Task<IActionResult> AlbumIndex(int id)
+        {
+            var profileContext = _context.Albums.Include(a => a.AlbumName).Include(a => a.Photo).Include(a => a.WebAppUser).Where(p => p.AlbumNameId == id);
+            return View(await profileContext.ToListAsync());
+        }
+
+        // GET: Shared Albums
+        public async Task<IActionResult> Shared(int id)
+        {
+            var sharedAlbum = _context.Albums.Include(a => a.AlbumName).Include(a => a.Photo).Include(a => a.WebAppUser).Where(p => p.AlbumNameId == id);
+            return View(await sharedAlbum.ToListAsync());
         }
 
         private bool AlbumExists(int id)

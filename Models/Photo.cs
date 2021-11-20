@@ -15,11 +15,12 @@ namespace DigiMarketWebApp.Models
     {
         [Key]
         public int PhotoID { get; set; }
-        [Column(TypeName = "nvarchar(50)")]
+        [Column(TypeName = "nvarchar(150)")]
         public string Title { get; set; }
         [Column(TypeName = "nvarchar(100)")]
         public string ImageName { get; set; }
 
+        [Required]
         [NotMapped]
         [DisplayName("Upload Photo")]
         public IFormFile ImageFile { get; set; }
@@ -30,5 +31,6 @@ namespace DigiMarketWebApp.Models
         public List<Metadata> Metadatas { get; set; }
         public List<Album> Albums { get; set; }
         public List<UserAccess> UserAccesses { get; set; }
+        public List<SharedAlbum> SharedAlbums { get; set; }
     }
 }

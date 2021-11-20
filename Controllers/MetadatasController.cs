@@ -9,9 +9,11 @@ using DigiMarketWebApp.Models;
 using DigiMarketWebApp.Data;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DigiMarketWebApp.Controllers
 {
+    [Authorize]
     public class MetadatasController : Controller
     {
         private readonly DigiMarketDbContext _context;
@@ -69,7 +71,7 @@ namespace DigiMarketWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MetadataID,Longtitude,Latitude,Tag,Date,Owner,PhotoID")] Metadata metadata)
+        public async Task<IActionResult> Create([Bind("MetadataID,Location,Tag,Date,Owner,PhotoID")] Metadata metadata)
         {
             int photoId = (int)HttpContext.Session.GetInt32("photoData");
             if (ModelState.IsValid)
@@ -106,7 +108,7 @@ namespace DigiMarketWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MetadataID,Longtitude,Latitude,Tag,Date,Owner,PhotoID")] Metadata metadata)
+        public async Task<IActionResult> Edit(int id, [Bind("MetadataID,Location,Tag,Date,Owner,PhotoID")] Metadata metadata)
         {
             if (id != metadata.MetadataID)
             {

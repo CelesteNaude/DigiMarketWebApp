@@ -10,9 +10,11 @@ using DigiMarketWebApp.Areas.Identity.Data;
 using DigiMarketWebApp.Data;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DigiMarketWebApp.Controllers
 {
+    [Authorize]
     public class UserAccessesController : Controller
     {
         private readonly DigiMarketDbContext _context;
@@ -76,7 +78,6 @@ namespace DigiMarketWebApp.Controllers
             if (ModelState.IsValid)
             {
                 int photoId = (int)HttpContext.Session.GetInt32("photoAccess");
-                //int photoId = (int)TempData["photoId"];
                 // Set user id
                 var user = _context.Users.Where(u => u.Email == userAccess.UserEmail).SingleOrDefault();
                 userAccess.Id = user.Id;

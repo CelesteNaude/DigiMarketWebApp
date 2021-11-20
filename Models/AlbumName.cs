@@ -1,27 +1,26 @@
 ﻿using DigiMarketWebApp.Areas.Identity.Data;
-using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace DigiMarketWebApp.Models
 {
-    public class Album
+    public class AlbumName
     {
         [Key]
-        public int AlbumID { get; set; }
+        public int AlbumNameID { get; set; }
+        [Required]
+        [Column(TypeName = "nvarchar(100)")]
+        public string Name { get; set; }
 
-        // Navigation Properties
-        public int AlbumNameId { get; set; }
-        public AlbumName AlbumName { get; set; }
-        public int PhotoID { get; set; }
-        public Photo Photo { get; set; }
-
+        //Navigation Properties
         public string Id { get; set; }
         public WebAppUser WebAppUser { get; set; }
 
+        public List<Album> Albums { get; set; }
         public List<SharedAlbum> SharedAlbums { get; set; }
     }
 }

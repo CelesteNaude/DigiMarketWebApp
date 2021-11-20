@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,8 +11,8 @@ namespace DigiMarketWebApp.Models
     {
         [Key]
         public int MetadataID { get; set; }
-        public int Longtitude { get; set; }
-        public int Latitude { get; set; }
+        [Column(TypeName = "nvarchar(100)")]
+        public string Location { get; set; }
         public string Tag { get; set; }
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }

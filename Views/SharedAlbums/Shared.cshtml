@@ -1,0 +1,47 @@
+﻿@model IEnumerable<DigiMarketWebApp.Models.SharedAlbum>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserEmail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AlbumName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WebAppUser)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserEmail)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AlbumName.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WebAppUser.Email)
+                </td>
+                <td>
+                    <a class="nav-link" asp-route-id="@item.AlbumNameID" asp-area="" asp-controller="Albums" asp-action="Shared">View Album</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

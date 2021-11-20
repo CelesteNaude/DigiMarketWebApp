@@ -47,6 +47,7 @@
                 <div class="text-center">
                     <a class="nav-link" asp-route-id="@item.PhotoID" asp-area="" asp-controller="Metadatas" asp-action="Index">More Information</a>
                     <a class="nav-link" asp-route-id="@item.PhotoID" asp-area="" asp-controller="UserAccesses" asp-action="Index">Share Photo</a>
+                    <a class="nav-link" asp-route-id="@item.PhotoID" asp-area="" asp-controller="Albums" asp-action="Index">Add Photo to Album</a>
                     <a asp-action="Details" asp-route-id="@item.PhotoID">Details</a>
                     <a asp-action="Delete" asp-route-id="@item.PhotoID">Delete Photo</a>
                 </div>
