@@ -14,14 +14,18 @@ a {
 
 .btn-primary {
   color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+  background-color:#03396c;
+  border-color:#011f4b;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
+}
+
+.bg-white {
+    background-color: #fff !important;
 }
 
 /* Sticky footer styles
@@ -62,6 +66,7 @@ body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
   font-family: "Roboto", sans-serif;
+  background-color: #e8f0f5;
 }
 .footer {
   position: absolute;
@@ -69,6 +74,48 @@ body {
   width: 100%;
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
+}
+
+.row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 0.25rem;
+    width: 500px;
+}
+
+.table td, .table th {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #808fa5;
+}
+
+.btn-light {
+    color: #212529;
+    background-color: #e8f0f5;
+    border-color: #e8f0f5;
+}
+
+.btn-light:hover {
+    color: #212529;
+    background-color: #b2bbc9;
+    border-color: #b2bbc9;
 }
 
 /* For tab control */
@@ -91,10 +138,16 @@ div.login-logout-tab a.nav-link {
 }
 
 div.card-content {
-    padding: 10px 20px;
+    padding: 10px 40px;
+    margin-left: 40px;
 }
 
 /* Login form */
 div.login-form-icon {
     text-align: center;
+}
+
+.logo {
+    height: 250px;
+
 }

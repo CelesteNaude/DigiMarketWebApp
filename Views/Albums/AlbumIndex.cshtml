@@ -5,11 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h2>Photos in the Album</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -18,9 +15,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Photo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WebAppUser)
             </th>
             <th></th>
         </tr>
@@ -38,9 +32,6 @@
                             <img src="@("~/image/"+item.Photo.ImageName)" asp-append-version="true" width="250px" height="250px" />
                         </dd>
                     </dl>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.WebAppUser.Id)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.AlbumID">Edit</a> |

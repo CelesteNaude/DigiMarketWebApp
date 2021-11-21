@@ -113,7 +113,10 @@ namespace DigiMarketWebApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["AlbumNameId"] = new SelectList(_context.AlbumNames, "AlbumNameID", "Name", album.AlbumNameId);
+            string email = User.FindFirstValue(ClaimTypes.Email);
+            var user = _context.Users.Where(u => u.Email == email).SingleOrDefault();
+            string userId = user.Id;
+            ViewData["AlbumNameId"] = new SelectList(_context.AlbumNames.Where(u => u.WebAppUser.Id == userId), "AlbumNameID", "Name");
             ViewData["PhotoID"] = new SelectList(_context.Photos, "PhotoID", "PhotoID", album.PhotoID);
             ViewData["Id"] = new SelectList(_context.Set<WebAppUser>(), "Id", "Id", album.Id);
             return View(album);

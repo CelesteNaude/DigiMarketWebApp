@@ -5,10 +5,25 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Share this Album</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    
+</p>
+<p>
+    <div class="row">
+        <div class="col-md-4 ">
+            <button type="submit" class="btn btn-primary btn-block"><a class="text-white nav-link" asp-controller="AlbumNames" asp-action="Index">Back to Albums</a></button>
+        </div>
+    </div>
+</p>
+<p>
+    <div class="row">
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary btn-block"><a class="text-white nav-link" asp-action="Create">Create New</a></button>
+
+        </div>
+    </div>
 </p>
 <table class="table">
     <thead>
@@ -16,33 +31,22 @@
             <th>
                 @Html.DisplayNameFor(model => model.UserEmail)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AlbumName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WebAppUser)
-            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserEmail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AlbumName.AlbumNameID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WebAppUser.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.SharedAlbumID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.SharedAlbumID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.SharedAlbumID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserEmail)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.SharedAlbumID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.SharedAlbumID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.SharedAlbumID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
