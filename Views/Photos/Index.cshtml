@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Photos</h1>
+<h1>My Photos</h1>
 
 <p>
     <div class="row">
@@ -27,23 +27,26 @@
     <tbody>
         @foreach (var item in Model)
         {
+        <tr>
+            <td>
+                <div class="row align-content-center">
+                    <div class="col-md-10">
+                        <h4>@Html.DisplayFor(modelItem => item.Title)</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <a asp-action="Details" asp-route-id="@item.PhotoID">Details</a>
+                    </div>
+                </div>
+            </td>
+            <td></td>
+        </tr>
             <tr>
                 <td>
-                    <div class="row">
-                        <div class="col-md-10">
-                            <h4>@Html.DisplayFor(modelItem => item.Title)</h4>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-10">
-                            <a asp-action="Details" asp-route-id="@item.PhotoID">Details</a>
-                        </div>
-                    </div>
-                </td>
-                <td>
                     <dl class="row">
-                        <dd class="col-md-3">
-                            <img src="@("~/image/"+item.ImageName)" asp-append-version="true" width="250px" height="250px" />
+                        <dd class="col-md-10">
+                            <img src="@("~/image/"+item.ImageName)" asp-append-version="true" />
                         </dd>
                     </dl>
                 </td>
@@ -66,7 +69,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-10">
-                                <button type="submit" class="btn btn-light btn-block"><a asp-action="Delete" asp-route-id="@item.PhotoID">Delete Photo</a></button>
+                                <button type="submit" class="btn btn-light btn-block"><a class="nav-link" asp-action="Delete" asp-route-id="@item.PhotoID">Delete Photo</a></button>
                             </div>
                         </div>
                     </div>

@@ -192,9 +192,49 @@ namespace DigiMarketWebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // GET: Albums/Delete/5
+        public async Task<IActionResult> DeletePhoto(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var album = await _context.Albums
+                .Include(a => a.AlbumName)
+                .Include(a => a.Photo)
+                .Include(a => a.WebAppUser)
+                .FirstOrDefaultAsync(m => m.AlbumID == id);
+            if (album == null)
+            {
+                return NotFound();
+            }
+
+            return View(album);
+        }
+
+        // POST: Albums/Delete/5
+        [HttpPost, ActionName("DeletePhoto")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed2(int id)
+        {
+            var album = await _context.Albums.FindAsync(id);
+            _context.Albums.Remove(album);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(AlbumIndex));
+        }
+
         // GET: View Album
         public async Task<IActionResult> AlbumIndex(int id)
         {
+            if (0 != id)
+            {
+                HttpContext.Session.SetInt32("photoAlbum", id);
+            }
+            if (0 == id)
+            {
+                id = (int)HttpContext.Session.GetInt32("photoAlbum");
+            }
             var profileContext = _context.Albums.Include(a => a.AlbumName).Include(a => a.Photo).Include(a => a.WebAppUser).Where(p => p.AlbumNameId == id);
             return View(await profileContext.ToListAsync());
         }
@@ -202,6 +242,14 @@ namespace DigiMarketWebApp.Controllers
         // GET: Shared Albums
         public async Task<IActionResult> Shared(int id)
         {
+            if (0 != id)
+            {
+                HttpContext.Session.SetInt32("photoAlbum", id);
+            }
+            if (0 == id)
+            {
+                id = (int)HttpContext.Session.GetInt32("photoAlbum");
+            }
             var sharedAlbum = _context.Albums.Include(a => a.AlbumName).Include(a => a.Photo).Include(a => a.WebAppUser).Where(p => p.AlbumNameId == id);
             return View(await sharedAlbum.ToListAsync());
         }

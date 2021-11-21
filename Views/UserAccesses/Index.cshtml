@@ -10,15 +10,15 @@
 
 <p>
     <div class="row">
-        <div class="col-md-3 ">
-            <button type="submit" class="btn btn-primary btn-block"><a class="text-white" asp-area="" asp-controller="Photos" asp-action="Index">Back to Photos</a></button>
+        <div class="col-md-4 ">
+            <button type="submit" class="btn btn-primary btn-block"><a class="text-white nav-link"  asp-area="" asp-controller="Photos" asp-action="Index">Back to Photos</a></button>
         </div>
     </div>
 </p>
 <p>
     <div class="row">
-        <div class="col-md-3">
-            <button type="submit" class="btn btn-primary btn-block"><a class="text-white" asp-action="Create">Create New</a></button>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary btn-block"><a class="text-white nav-link"  asp-action="Create">Create New</a></button>
 
         </div>
     </div>
@@ -27,7 +27,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.UserEmail)
+                User Email
             </th>
             <th></th>
         </tr>

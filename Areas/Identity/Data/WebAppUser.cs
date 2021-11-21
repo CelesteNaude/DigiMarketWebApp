@@ -13,7 +13,7 @@ namespace DigiMarketWebApp.Areas.Identity.Data
     public class WebAppUser : IdentityUser
     {
         [Key]
-        public string Id { get; set; }
+        public override string Id { get; set; }
         [PersonalData]
         [Column("First Name", TypeName = "nvarchar(100)")]
         public string FirstName { get; set; }

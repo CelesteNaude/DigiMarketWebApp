@@ -79,8 +79,10 @@ namespace DigiMarketWebApp.Controllers
             {
                 int photoId = (int)HttpContext.Session.GetInt32("photoAccess");
                 // Set user id
-                var user = _context.Users.Where(u => u.Email == userAccess.UserEmail).SingleOrDefault();
-                userAccess.Id = user.Id;
+                string email = User.FindFirstValue(ClaimTypes.Email);
+                var user = _context.Users.Where(u => u.Email == email).SingleOrDefault();
+                string userId = user.Id;
+                userAccess.Id = userId;
 
                 // Set photo id
                 userAccess.PhotoID = photoId;

@@ -5,23 +5,27 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h2>Shared Photos</h2>
 
 <p>
-    <a class="nav-link text-dark" asp-area="" asp-controller="Photos" asp-action="Index">Back to Photos</a>
-    <a asp-action="Create">Create New</a>
+    
+    
+</p>
+<p>
+    <div class="row">
+        <div class="col-md-4 ">
+            <button type="submit" class="btn btn-primary btn-block"><a class="text-white nav-link" asp-area="" asp-controller="Photos" asp-action="Index">Back to Photos</a></button>
+        </div>
+    </div>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.UserEmail)
-            </th>
-            <th>
                 Photo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.WebAppUser)
+                Photo shared by
             </th>
             <th></th>
         </tr>
@@ -31,9 +35,6 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.UserEmail)
-                </td>
-                <td>
                     <dl class="row">
                         <dd class="col-sm-10">
                             <img src="@("~/image/"+item.Photo.ImageName)" asp-append-version="true" width="250px" height="250px" />
@@ -41,7 +42,7 @@
                     </dl>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.WebAppUser.Id)
+                    @Html.DisplayFor(modelItem => item.WebAppUser.Email)
                 </td>
                 <td>
                     <div class="text-center">

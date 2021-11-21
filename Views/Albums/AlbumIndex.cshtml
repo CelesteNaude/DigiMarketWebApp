@@ -6,13 +6,16 @@
 }
 
 <h2>Photos in the Album</h2>
-
+<p>
+    <div class="row">
+        <div class="col-md-3 ">
+            <button type="submit" class="btn btn-primary btn-block"><a class="text-white nav-link" asp-area="" asp-controller="AlbumNames" asp-action="Index">Back to Albums</a></button>
+        </div>
+    </div>
+</p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.AlbumName)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Photo)
             </th>
@@ -24,9 +27,6 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.AlbumName.Name)
-                </td>
-                <td>
                     <dl class="row">
                         <dd class="col-sm-10">
                             <img src="@("~/image/"+item.Photo.ImageName)" asp-append-version="true" width="250px" height="250px" />
@@ -34,9 +34,7 @@
                     </dl>
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.AlbumID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.AlbumID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.AlbumID">Delete</a>
+                    <a asp-action="DeletePhoto" asp-route-id="@item.AlbumID">Delete</a>
                 </td>
             </tr>
         }

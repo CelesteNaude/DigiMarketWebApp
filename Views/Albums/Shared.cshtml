@@ -5,20 +5,20 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h2>Photos in shared Album</h2>
 
-
+<p>
+    <div class="row">
+        <div class="col-md-3 ">
+            <button type="submit" class="btn btn-primary btn-block"><a class="text-white nav-link" asp-area="" asp-controller="SharedAlbums" asp-action="Shared">Back to shared Albums</a></button>
+        </div>
+    </div>
+</p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.AlbumName)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Photo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WebAppUser)
             </th>
             <th></th>
         </tr>
@@ -27,17 +27,20 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.AlbumName.Name)
-            </td>
-            <td>
                 <dl class="row">
                     <dd class="col-sm-10">
-                        <img src="@("~/image/"+item.Photo.ImageName)" asp-append-version="true" width="250px" height="250px" />
+                        <img src="@("~/image/"+item.Photo.ImageName)" asp-append-version="true" />
                     </dd>
                 </dl>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.WebAppUser.Id)
+                <div class="text-center">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <button type="submit" class="btn btn-light btn-block"><a class="nav-link" asp-route-id="@item.PhotoID" asp-area="" asp-controller="Metadatas" asp-action="ViewOnly">More Information</a></button>
+                        </div>
+                    </div>
+                </div>
             </td>
         </tr>
 }

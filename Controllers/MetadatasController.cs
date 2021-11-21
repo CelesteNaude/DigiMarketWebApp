@@ -170,6 +170,21 @@ namespace DigiMarketWebApp.Controllers
             //return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> ViewOnly(int id)
+        {
+            if (0 != id)
+            {
+                HttpContext.Session.SetInt32("photoData", id);
+            }
+            if (0 == id)
+            {
+                id = (int)HttpContext.Session.GetInt32("photoData");
+            }
+            // Get only metadata related to the photo
+            var profileContext = _context.Metadatas.Include(m => m.Photo).Where(p => p.PhotoID == id);
+            return View(await profileContext.ToListAsync());
+        }
+
         private bool MetadataExists(int id)
         {
             return _context.Metadatas.Any(e => e.MetadataID == id);

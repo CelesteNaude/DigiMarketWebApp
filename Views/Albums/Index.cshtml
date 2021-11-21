@@ -9,15 +9,15 @@
 
 <p>
     <div class="row">
-        <div class="col-md-3 ">
-            <button type="submit" class="btn btn-primary btn-block"><a class="text-white" asp-area="" asp-controller="Photos" asp-action="Index">Back to Photos</a></button>
+        <div class="col-md-4 ">
+            <button type="submit" class="btn btn-primary btn-block"><a class="text-white nav-link" asp-area="" asp-controller="Photos" asp-action="Index">Back to Photos</a></button>
         </div>
     </div>
 </p>
 <p>
     <div class="row">
-        <div class="col-md-3">
-            <button type="submit" class="btn btn-primary btn-block"><a class="text-white" asp-action="Create">Create New</a></button>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary btn-block"><a class="text-white nav-link" asp-action="Create">Create New</a></button>
 
         </div>
     </div>
@@ -26,10 +26,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.AlbumName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Photo)
+                Album Name
             </th>
             <th></th>
         </tr>
@@ -40,13 +37,6 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.AlbumName.Name)
-                </td>
-                <td>
-                    <dl class="row">
-                        <dd class="col-sm-10">
-                            <img src="@("~/image/"+item.Photo.ImageName)" asp-append-version="true" width="250px" height="250px" />
-                        </dd>
-                    </dl>
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.AlbumID">Edit</a> |

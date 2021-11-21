@@ -113,6 +113,10 @@ namespace DigiMarketWebApp.Controllers
             {
                 try
                 {
+                    string email = User.FindFirstValue(ClaimTypes.Email);
+                    var user = _context.Users.Where(u => u.Email == email).SingleOrDefault();
+                    string userId = user.Id;
+                    albumName.Id = userId;
                     _context.Update(albumName);
                     await _context.SaveChangesAsync();
                 }
@@ -130,7 +134,7 @@ namespace DigiMarketWebApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["Id"] = new SelectList(_context.Set<WebAppUser>(), "Id", "Id", albumName.Id);
-            return View(albumName);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: AlbumNames/Delete/5
