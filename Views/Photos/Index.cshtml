@@ -69,6 +69,11 @@
                         </div>
                         <div class="row">
                             <div class="col-md-10">
+                                <button type="submit" class="btn btn-light btn-block"><a class="nav-link" asp-action="DownloadImage" asp-route-id="@item.ImageName">Download Photo</a></button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10">
                                 <button type="submit" class="btn btn-light btn-block"><a class="nav-link" asp-action="Delete" asp-route-id="@item.PhotoID">Delete Photo</a></button>
                             </div>
                         </div>

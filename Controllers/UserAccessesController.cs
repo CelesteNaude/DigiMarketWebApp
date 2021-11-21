@@ -11,6 +11,7 @@ using DigiMarketWebApp.Data;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using System.IO;
 
 namespace DigiMarketWebApp.Controllers
 {
