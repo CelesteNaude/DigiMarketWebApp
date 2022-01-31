@@ -9,9 +9,11 @@ using DigiMarketWebApp.Models;
 using DigiMarketWebApp.Data;
 using DigiMarketWebApp.Areas.Identity.Data;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DigiMarketWebApp.Controllers
 {
+    [Authorize]
     public class AlbumNamesController : Controller
     {
         private readonly DigiMarketDbContext _context;

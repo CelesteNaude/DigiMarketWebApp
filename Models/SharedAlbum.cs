@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,11 +12,12 @@ namespace DigiMarketWebApp.Models
     {
         [Key]
         public int SharedAlbumID { get; set; }
+
         [Required]
+        [StringLength(250)]
         public string UserEmail { get; set; }
 
         // Navigation Properties
-
         public int AlbumNameID { get; set; }
         public AlbumName AlbumName { get; set; }
 

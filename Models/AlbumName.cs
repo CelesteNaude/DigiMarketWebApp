@@ -12,8 +12,9 @@ namespace DigiMarketWebApp.Models
     {
         [Key]
         public int AlbumNameID { get; set; }
+
         [Required]
-        [Column(TypeName = "nvarchar(100)")]
+        [StringLength(60, MinimumLength = 3)]
         public string Name { get; set; }
 
         //Navigation Properties

@@ -4,14 +4,16 @@ using DigiMarketWebApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DigiMarketWebApp.Migrations
 {
     [DbContext(typeof(DigiMarketDbContext))]
-    partial class DigiMarketDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220130121924_LimitSize")]
+    partial class LimitSize
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -135,8 +137,7 @@ namespace DigiMarketWebApp.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("AlbumNameID");
 
@@ -156,19 +157,16 @@ namespace DigiMarketWebApp.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Location")
-                        .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Owner")
-                        .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("PhotoID")
                         .HasColumnType("int");
 
                     b.Property<string>("Tag")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("MetadataID");
 
@@ -188,12 +186,10 @@ namespace DigiMarketWebApp.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ImageName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
+                        .HasColumnType("nvarchar(150)");
 
                     b.HasKey("PhotoID");
 
@@ -223,7 +219,6 @@ namespace DigiMarketWebApp.Migrations
 
                     b.Property<string>("UserEmail")
                         .IsRequired()
-                        .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.HasKey("SharedAlbumID");
@@ -254,7 +249,6 @@ namespace DigiMarketWebApp.Migrations
 
                     b.Property<string>("UserEmail")
                         .IsRequired()
-                        .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.HasKey("UserAccessID");

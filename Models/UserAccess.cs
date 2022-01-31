@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,7 +13,9 @@ namespace DigiMarketWebApp.Models
     {
         [Key]
         public int UserAccessID { get; set; }
+
         [Required]
+        [StringLength(250)]
         public string UserEmail { get; set; }
 
 

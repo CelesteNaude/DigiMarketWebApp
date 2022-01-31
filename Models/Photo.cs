@@ -15,9 +15,11 @@ namespace DigiMarketWebApp.Models
     {
         [Key]
         public int PhotoID { get; set; }
-        [Column(TypeName = "nvarchar(150)")]
+
+        [Required]
+        [StringLength(60, MinimumLength = 3)]
         public string Title { get; set; }
-        [Column(TypeName = "nvarchar(100)")]
+
         public string ImageName { get; set; }
 
         [Required]
